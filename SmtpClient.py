@@ -8,7 +8,7 @@ def smtp_client():
     # You MUST replace this with a valid, accessible SMTP server.
     # Port 25 is the standard, but many ISPs block it.
     # #Fill in start
-    mailserver = ("smtp.example.com", 25) # e.g., your university's SMTP server
+    mailserver = ("localhost", 1025) # e.g., your university's SMTP server
     # #Fill in end
     
     # Create socket called clientSocket and establish a TCP connection with mailserver
@@ -34,7 +34,7 @@ def smtp_client():
         
     # Send MAIL FROM command and print server response.
     # #Fill in start
-    mailFrom = "MAIL FROM:<sender@example.com>\r\n" # Replace with your email
+    mailFrom = "MAIL FROM:<samson@test.com>\r\n" # Replace with your email
     clientSocket.send(mailFrom.encode())
     recv2 = clientSocket.recv(1024).decode()
     print("S:", recv2)
@@ -45,7 +45,7 @@ def smtp_client():
     
     # Send RCPT TO command and print server response.
     # #Fill in start
-    rcptTo = "RCPT TO:<recipient@example.com>\r\n" # Replace with recipient's email
+    rcptTo = "RCPT TO:<okuthe@test.com>\r\n" # Replace with recipient's email
     clientSocket.send(rcptTo.encode())
     recv3 = clientSocket.recv(1024).decode()
     print("S:", recv3)

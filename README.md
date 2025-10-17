@@ -59,19 +59,48 @@ This task consists of a UDP server that simulates packet loss and a client that 
 
 ### Task 3: SMTP Mail Client
 
-This task implements a simple mail client to send an email using the SMTP protocol.
+Implements a minimal SMTP client that sends an unencrypted email. Because most public mail providers require TLS and authentication, this repository uses a local debugging SMTP server to test the client without credentials.
 
-**Note:** Most modern mail servers (Gmail, Outlook) require TLS encryption and authentication, which this basic client does not support. You will need access to an SMTP server that allows unencrypted connections on port 25 or 587.
+Prerequisites
 
-1.  **Important:** Edit the `SmtpClient.py` file and update the following variables with your details:
-    - `mailserver`: The address and port of your SMTP server.
-    - `mailFrom`: The sender's email address.
-    - `rcptTo`: The recipient's email address.
-2.  Run the client from your terminal:
-    ```bash
-    python SmtpClient.py
-    ```
-3.  Check the recipient's email inbox (including the spam/junk folder) for the message.
+- Python 3.x
+- The development-only package `aiosmtpd` (only required for the local debug server):
+
+```powershell
+pip install aiosmtpd
+```
+
+Quick steps (PowerShell)
+
+1. Open two separate terminal windows.
+
+2. In the first terminal, start a local debugging SMTP server (it will print received emails to the console):
+
+```powershell
+python -m aiosmtpd -n -l localhost:1025 -c aiosmtpd.handlers.Debugging
+```
+
+3. In the second terminal, run the SMTP client (the client is preconfigured to use localhost:1025):
+
+```powershell
+python SmtpClient.py
+```
+
+What to expect
+
+- The debugging server (first terminal) will print the full SMTP transaction and the received message, including headers and the body (the example client sends the message "I love computer networks!").
+- No real email is sent — this is a local test only.
+
+Troubleshooting
+
+- If you see an import error for `aiosmtpd`, make sure you installed it in the same Python environment you use to run the server.
+- If the client fails to connect, verify the server is running on `localhost:1025` and no firewall is blocking that port.
+- To test with a real SMTP provider (Gmail, Outlook), you will need to update `SmtpClient.py` to use TLS and proper authentication. Do not use plaintext credentials in public repos.
+
+Notes
+
+- The local debugging server is intended for development and testing only. It accepts unauthenticated, unencrypted connections and prints incoming messages to stdout.
+- For production use or sending real mail, use an authenticated TLS-capable SMTP library or service.
 
 ### Task 4: RDT (Alternating-Bit-Protocol)
 
